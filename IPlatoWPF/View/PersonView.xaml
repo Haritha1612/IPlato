@@ -38,7 +38,7 @@
             <RowDefinition Height="15*"/>
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
-
+        <!-- Display Any Error messages or even messages on updating the records-->
         <Label Grid.Row="3" Content="{Binding Message}" FontSize="12" Foreground="Crimson"/>
         <!--<Viewbox HorizontalAlignment="Stretch">-->
             <ListView Grid.Row="0"   ItemsSource="{Binding Persons, UpdateSourceTrigger=PropertyChanged}"                       
@@ -115,8 +115,7 @@
                     Command="{Binding UpdatePersonCommand}" ToolTip="Updated the selected Person's information."/>
             <Button x:Name="DeleteProductButton" FontSize="15" Content="Delete" Grid.Column="2" Margin="8"
                     Command="{Binding DeletePersonCommand}" ToolTip="Removes the selected Person's information."/>
-        </Grid>
-        <!-- Display Any Error messages or even messages on updating the records-->
+        </Grid>        
 
     </Grid>
 

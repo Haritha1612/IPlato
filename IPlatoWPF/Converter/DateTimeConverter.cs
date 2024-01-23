@@ -9,6 +9,9 @@ using System.Windows.Data;
 
 namespace IPlatoWPF.Converter
 {
+    /// <summary>
+    /// class that performs datetime conversion to short date string and vice versa.
+    /// </summary>
     internal class DateTimeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

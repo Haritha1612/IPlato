@@ -14,9 +14,6 @@ namespace IPlatoWPF.Helper
         readonly Action<object> _execute;
         readonly Predicate<object> _canExecute;
 
-        // TODO DH - startServerSocket never seems to be used (other than setting the value)
-        //private Action startServerSocket;
-
         #endregion // Fields
 
         #region Constructors
@@ -43,12 +40,6 @@ namespace IPlatoWPF.Helper
             _execute = execute;
             _canExecute = canExecute;
         }
-
-        // TODO DH - this did not seem to be intentionally used
-        //public RelayCommand(Action startServerSocket)
-        //{
-        //    //this.startServerSocket = startServerSocket;
-        //}
 
         #endregion // Constructors
 
