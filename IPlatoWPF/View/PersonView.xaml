@@ -1,0 +1,123 @@
+﻿<UserControl x:Class="IPlatoWPF.View.PersonView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IPlatoWPF.View"
+             xmlns:model="clr-namespace:IPlatoWPF.ViewModel"
+             xmlns:converter="clr-namespace:IPlatoWPF.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converter:DateTimeConverter x:Key="dateConverter"/>
+        <Style TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+                        <Border BorderThickness="0,0,0,1" BorderBrush="Black" Background="Transparent" >
+                            <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Padding="5,5,5,0"
+                                       Width="{TemplateBinding Width}" TextAlignment="Left" 
+                                       Foreground="CadetBlue" FontSize="15"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <UserControl.DataContext>
+        <model:PersonViewmodel></model:PersonViewmodel>
+    </UserControl.DataContext>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="60*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="3" Content="{Binding Message}" FontSize="12" Foreground="Crimson"/>
+        <!--<Viewbox HorizontalAlignment="Stretch">-->
+            <ListView Grid.Row="0"   ItemsSource="{Binding Persons, UpdateSourceTrigger=PropertyChanged}"                       
+                       SelectedItem="{Binding SelectedPerson, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      FontSize="15"   ScrollViewer.CanContentScroll="False" Margin="5">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Person Information">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=FirstName}" Header="First Name" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=LastName}" Header="Last Name" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=DateOfBirth, Converter={StaticResource dateConverter}}" 
+                                        Header="Date of Birth:" Width="100"/>
+                    </GridView>
+                </ListView.View>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding OnSelectionChangedCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ListView>
+
+        <!--</Viewbox>-->
+
+        <!-- Display Form to fill in the details of a person-->
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="First Name:" FontSize="20" Grid.Column="1" 
+                           VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+            <Label Content="Last Name:" FontSize="20" Grid.Column="1" Grid.Row="1"
+                           VerticalContentAlignment="Center" HorizontalContentAlignment="Left" />
+            <Label Content="Date of Birth:" FontSize="20" Grid.Column="1" Grid.Row="2"
+                           VerticalContentAlignment="Center" HorizontalContentAlignment="Left" />
+            <Label Content="Profession:" FontSize="20" Grid.Column="1"  Grid.Row="3"
+                           VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+
+            <TextBox x:Name="FirstNameTextBox" FontSize="20" 
+                             HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                             Grid.Column="2" Margin="8" TextWrapping="Wrap"
+                         Text="{Binding PersonDetails.FirstName}"/>
+            <TextBox x:Name="LastNameTextBox" FontSize="20" Grid.Row="1"
+                             HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                             Grid.Column="2" Margin="8" TextWrapping="Wrap"
+                         Text="{Binding PersonDetails.LastName}"/>
+            <TextBox x:Name="DoBTextBox" FontSize="20" Grid.Row="2"
+                             HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                             Grid.Column="2" Margin="8" TextWrapping="Wrap"
+                         Text="{Binding PersonDetails.DateOfBirth, Converter={StaticResource dateConverter}}"/>
+            <TextBox x:Name="ProfessionTextBox" FontSize="20" Grid.Row="3"
+                             HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                             Grid.Column="2" Margin="8" TextWrapping="Wrap"
+                         Text="{Binding PersonDetails.Profession}"/>
+
+        </Grid>
+        <Grid  Grid.Row="2" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="CreateProductButton" FontSize="15" Content="Add Person" Margin="8" Grid.Column="0" 
+                    Command="{Binding AddNewPersonCommand}" ToolTip="Adds new Person's information."/>
+            <Button x:Name="UpdateProductButton" FontSize="15" Content="Update" Grid.Column="1"  Margin="8" 
+                    Command="{Binding UpdatePersonCommand}" ToolTip="Updated the selected Person's information."/>
+            <Button x:Name="DeleteProductButton" FontSize="15" Content="Delete" Grid.Column="2" Margin="8"
+                    Command="{Binding DeletePersonCommand}" ToolTip="Removes the selected Person's information."/>
+        </Grid>
+        <!-- Display Any Error messages or even messages on updating the records-->
+
+    </Grid>
+
+</UserControl>
